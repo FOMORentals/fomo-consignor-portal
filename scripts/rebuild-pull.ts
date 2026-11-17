@@ -73,7 +73,7 @@ async function main() {
 
   const subprojects = await pageAll(
     "/subprojects",
-    "id,project,status,in_financial,name,discount_rental,discount_total,usageperiod_start,usageperiod_end,planperiod_start,planperiod_end"
+    "id,project,status,in_financial,name,discount_rental,discount_subproject,discount_fixed,fixed_price,usageperiod_start,usageperiod_end,planperiod_start,planperiod_end"
   );
   const groups = await pageAll("/projectequipmentgroup", "id,subproject,project,in_price_calculation,usageperiod_start,usageperiod_end", {
     "created[gte]": PULL_FROM,
