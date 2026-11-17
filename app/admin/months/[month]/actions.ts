@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { addAdjustment, EditRefused, parsePounds, removeAdjustment, signOffWarning } from "@/lib/month-edits";
+import { makeBills, publish } from "@/lib/publish-run";
 import { ACCOUNTS, MONTHS, audit, db, type AccountRecord, type MonthRecord } from "@/lib/store";
 
 async function staffEmail(): Promise<string> {
@@ -59,4 +60,32 @@ export async function signOffAction(month: string, warningId: string, form: Form
   const by = await staffEmail();
   const note = String(form.get("note") ?? "");
   await edit(month, null, (m) => signOffWarning(m, warningId, by, new Date().toISOString(), note), ["check signed off", { warningId, note }]);
+}
+
+/** Publish: freeze the month and make the Xero draft bills (lib/publish-run.ts). */
+export async function publishAction(month: string) {
+  const by = await staffEmail();
+  let error = "";
+  try {
+    await publish(month, by);
+  } catch (e) {
+    if (!(e instanceof EditRefused)) throw e;
+    error = e.message;
+  }
+  revalidatePath(`/admin/months/${month}`);
+  if (error) redirect(`/admin/months/${month}?error=${encodeURIComponent(error)}`);
+}
+
+/** Make any Xero draft bill that failed (or wasn't reached) last time. Never makes a second bill. */
+export async function retryBillsAction(month: string) {
+  const by = await staffEmail();
+  let error = "";
+  try {
+    await makeBills(month, by);
+  } catch (e) {
+    if (!(e instanceof EditRefused)) throw e;
+    error = e.message;
+  }
+  revalidatePath(`/admin/months/${month}`);
+  if (error) redirect(`/admin/months/${month}?error=${encodeURIComponent(error)}`);
 }

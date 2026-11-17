@@ -48,3 +48,7 @@ details.adjust { border-bottom: 1px solid var(--line); padding: 10px 0; }
 details.adjust summary { cursor: pointer; font-weight: 600; }
 details.adjust ul { margin: 8px 0; }
 details.signedOff { margin: -12px 0 24px; color: var(--muted); }
+
+.bills { list-style: none; padding: 0; }
+.bills li { padding: 4px 0; border-bottom: 1px solid var(--line, #e5e5e5); }
+.bills li.failed { color: #b3261e; }

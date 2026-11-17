@@ -11,6 +11,7 @@ Private site at consignors.fomorentals.co.uk where consignors see their kit's ea
 | The checks Sam clears before Publish | `lib/checks.ts` |
 | Firestore collections (`consignor_accounts`, `consignor_months`, `consignor_audit`) | `lib/store.ts` |
 | Staff sign-in (Google, Sam and Jamie only) and the month and consignor pages | `auth.ts`, `app/admin/` |
+| Publish: freeze the month, self-billed invoice / statement PDF, Xero draft bills | `lib/publish.ts`, `lib/publish-run.ts`, `lib/statement-pdf.ts`, `lib/xero.ts` |
 
 Consignor sign-in, Publish (PDFs, Xero draft bills, emails) and the nightly Rentman read come next.
 
@@ -24,6 +25,8 @@ Consignor sign-in, Publish (PDFs, Xero draft bills, emails) and the nightly Rent
 | `GOOGLE_WORKSPACE_DOMAIN` | Optional, default `fomorentals.co.uk`. |
 | `STAFF_EMAILS` | Optional, comma-separated. Default Sam and Jamie (`lib/staff.ts`). |
 | `FIREBASE_SERVICE_ACCOUNT_BASE64` | Same Firebase service account as the other FOMO apps (project `fomo-bookings-board-v2`). |
+| `XERO_CLIENT_ID` / `XERO_CLIENT_SECRET` | Xero custom connection for Publish. Scopes: `accounting.transactions accounting.contacts.read accounting.attachments accounting.settings.read`. Draft bills and attachments only. |
+| `XERO_SCOPES` | Optional, if the Xero app uses Xero's granular scopes instead. |
 
 ## Scripts (run on Jamie's Mac)
 
