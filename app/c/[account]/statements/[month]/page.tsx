@@ -9,13 +9,19 @@ export default async function Statement({ params }: { params: Promise<{ account:
   const { account, view, months } = await load(id);
   const s = view.statements.find((x) => x.month === month);
   if (!s) notFound();
-  const hasPdf = !!months.find((m) => m.month === month)?.parties?.[account.id];
+  const record = months.find((m) => m.month === month);
+  const hasPdf = !!record?.parties?.[account.id];
   const selfBilling = s.method === "self_billing";
   return (
     <main>
       <h1>{monthName(month)}</h1>
       <p className="sub">
-        {selfBilling ? `Self-billed invoice ${selfBillingNumber(account, month)}` : `Reference ${selfBillingNumber(account, month)}`} · Paid by{" "}
+        {record?.history
+          ? "From FOMO's 2026 consignment records"
+          : selfBilling
+            ? `Self-billed invoice ${selfBillingNumber(account, month)}`
+            : `Reference ${selfBillingNumber(account, month)}`}{" "}
+        · Paid by{" "}
         {METHOD_LABEL[s.method].toLowerCase()}
         {s.method === "rentman_credit" && " (FOMO adds this as credit on your Rentman account)"}
         {hasPdf && (
@@ -34,8 +40,8 @@ export default async function Statement({ params }: { params: Promise<{ account:
             </tr>
           </thead>
           <tbody>
-            {s.items.map((i) => (
-              <tr key={i.equipmentId}>
+            {s.items.map((i, n) => (
+              <tr key={n}>
                 <td>{i.name}</td>
                 <td className="num">{pounds(i.pence)}</td>
               </tr>

@@ -167,6 +167,8 @@ export default async function MonthPage({
               : "Fixes the figures, makes the Xero draft bills with their PDFs (Sam approves them in Xero). Consignor pages and emails come in a later update."}
           </span>
         </form>
+      ) : record.history ? (
+        <p className="note actions">Loaded from the Consignment Tracker 2026 as it was paid. Billed in Xero from the tracker, not from here.</p>
       ) : (
         <section>
           <h2 className="section">Xero draft bills</h2>
