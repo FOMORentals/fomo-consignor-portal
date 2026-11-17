@@ -1,0 +1,41 @@
+:root {
+  /* FOMO brand system v2, as the client portal */
+  --ink: #050504;
+  --page: #f9f9f7;
+  --paper: #efefeb;
+  --muted: #5e5e5c;
+  --line: rgba(5, 5, 4, 0.16);
+  --brand: #193a2c;
+  --lime: #e7efc9;
+  --warn: #a5521f;
+  --warn-bg: #fbeee3;
+  --font-body: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-display), Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--font-body); }
+a { color: inherit; }
+.shell { max-width: 1200px; margin: 0 auto; padding: 24px 16px 64px; }
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 24px; }
+.top nav { display: flex; gap: 16px; font-size: 14px; }
+.brand { font-family: var(--font-serif); font-size: 28px; }
+h1 { font-family: var(--font-serif); font-weight: 400; font-size: 36px; margin: 0 0 4px; }
+.sub { color: var(--muted); margin: 0 0 24px; }
+.status { display: inline-block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 2px; background: var(--paper); }
+.status.published { background: var(--lime); }
+.tableWrap { overflow-x: auto; border: 1px solid var(--line); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { background: var(--paper); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tfoot td { font-weight: 700; background: var(--paper); }
+.warnings { border: 1px solid var(--warn); background: var(--warn-bg); padding: 12px 16px; margin: 0 0 24px; }
+.warnings h2 { font-size: 16px; margin: 0 0 8px; color: var(--warn); }
+.warnings li { margin: 4px 0; }
+.ok { border: 1px solid var(--brand); background: var(--lime); padding: 12px 16px; margin: 0 0 24px; }
+.actions { display: flex; gap: 12px; align-items: center; margin-top: 24px; flex-wrap: wrap; }
+button { font: inherit; font-weight: 600; padding: 10px 18px; border: 1px solid var(--ink); background: var(--ink); color: var(--page); border-radius: 2px; cursor: pointer; }
+button:disabled { background: var(--paper); color: var(--muted); border-color: var(--line); cursor: not-allowed; }
+.note { color: var(--muted); font-size: 14px; }
+.empty { padding: 24px; border: 1px dashed var(--line); color: var(--muted); }
+.signin { max-width: 420px; margin: 15vh auto; padding: 32px; border: 1px solid var(--line); background: #fff; }
