@@ -39,3 +39,12 @@ button:disabled { background: var(--paper); color: var(--muted); border-color: v
 .note { color: var(--muted); font-size: 14px; }
 .empty { padding: 24px; border: 1px dashed var(--line); color: var(--muted); }
 .signin { max-width: 420px; margin: 15vh auto; padding: 32px; border: 1px solid var(--line); background: #fff; }
+
+form.inline { display: inline-flex; gap: 8px; margin-left: 12px; align-items: center; flex-wrap: wrap; }
+input { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 2px; background: #fff; }
+button.quiet { background: transparent; color: var(--ink); border-color: var(--line); padding: 4px 10px; font-weight: 400; }
+h2.section { font-family: var(--font-serif); font-weight: 400; font-size: 24px; margin: 32px 0 4px; }
+details.adjust { border-bottom: 1px solid var(--line); padding: 10px 0; }
+details.adjust summary { cursor: pointer; font-weight: 600; }
+details.adjust ul { margin: 8px 0; }
+details.signedOff { margin: -12px 0 24px; color: var(--muted); }
