@@ -9,6 +9,9 @@ import styles from "./KitGrid.module.css";
  */
 export default function KitGrid({ view }: { view: Pick<ConsignorView, "months" | "firstMonth" | "kit"> }) {
   const front = view.months[0];
+  // While every statement is in one year, the total column is that year ("2026"); once they span years, "Lifetime".
+  const years = new Set(view.months.map((m) => m.slice(0, 4)));
+  const totalLabel = years.size === 1 ? [...years][0] : "Lifetime";
   const monthTotal = (m: string) => view.kit.reduce((a, k) => a + (k.byMonth[m] ?? 0), 0);
   const lifetime = view.kit.reduce((a, k) => a + k.totalPence, 0);
   return (
@@ -31,7 +34,7 @@ export default function KitGrid({ view }: { view: Pick<ConsignorView, "months" |
                     {monthShort(m)}
                   </th>
                 ))}
-                <th className={`num ${styles.total}`}>Lifetime</th>
+                <th className={`num ${styles.total}`}>{totalLabel}</th>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +66,6 @@ export default function KitGrid({ view }: { view: Pick<ConsignorView, "months" |
           </table>
         </div>
       )}
-      <p className="note">Item totals are before any deductions, so they can differ from your statements&apos; net payout.</p>
     </div>
   );
 }

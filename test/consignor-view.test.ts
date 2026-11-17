@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { consignorView, kitName } from "../lib/consignor-view.ts";
+import { consignorView, kitKey, kitName } from "../lib/consignor-view.ts";
 import { buildStatement, type Account } from "../lib/payout.ts";
 import type { MonthRecord } from "../lib/store.ts";
 
@@ -48,4 +48,13 @@ test("an item renamed with the consignor code in front is one row", () => {
   assert.equal(kitName("Leica M11 Monochrom"), "Leica M11 Monochrom");
   assert.equal(kitName("ARRI - Alexa Mini"), "Alexa Mini");
   assert.equal(kitName("Kit - Canon C80"), "Kit - Canon C80");
+});
+
+test("an item renamed in Rentman is one row, under its newest name", () => {
+  assert.equal(kitKey("Leica 135mm Elmarit R Series f/2.8 Lens (Leica R Mount)"), kitKey("Leica 135mm Elmarit R Series F2.8"));
+  assert.equal(kitKey("Leica 35mm Summicron R Series f/1.4 Lens"), kitKey("Leica 35mm Summicron R Series F1.4"));
+  assert.notEqual(kitKey("Leica 35mm Summicron R Series F1.4"), kitKey("Leica 50mm Summicron R Series F1.4"));
+  const mk = (month: string, name: string, pence: number): MonthRecord => ({ ...m(month, "published", 0), statements: [buildStatement(jm, month, [{ equipmentId: 1, name, pence }])] });
+  const v = consignorView([mk("2026-03", "Leica 135mm Elmarit R Series f/2.8 Lens (Leica R Mount)", 2000), mk("2026-06", "Leica 135mm Elmarit R Series F2.8", 4000)], "fkf");
+  assert.deepEqual(v.kit.map((k) => [k.name, k.totalPence]), [["Leica 135mm Elmarit R Series F2.8", 3000]]);
 });
