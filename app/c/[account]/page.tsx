@@ -2,7 +2,7 @@ import Link from "next/link";
 import { load } from "./data";
 import { monthName, pounds } from "@/lib/format";
 
-/** Overview (spec §3.1): what they earned in the latest published month, this year and since January 2026. */
+/** Overview (spec §3.1): what they earned in the latest published month, this year and since their first statement. */
 export default async function Overview({ params }: { params: Promise<{ account: string }> }) {
   const { account: id } = await params;
   const { account, view } = await load(id);
@@ -29,7 +29,7 @@ export default async function Overview({ params }: { params: Promise<{ account: 
           <div className="value">{pounds(view.yearNet)}</div>
         </div>
         <div className="tile">
-          <div className="label">Since January 2026</div>
+          <div className="label">{view.firstMonth ? `Since ${monthName(view.firstMonth)}` : "All time"}</div>
           <div className="value">{pounds(view.allNet)}</div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { consignorView } from "../lib/consignor-view.ts";
+import { consignorView, kitName } from "../lib/consignor-view.ts";
 import { buildStatement, type Account } from "../lib/payout.ts";
 import type { MonthRecord } from "../lib/store.ts";
 
@@ -31,4 +31,21 @@ test("nothing published yet", () => {
   const v = consignorView([m("2026-11", "draft", 1)], "fkf");
   assert.equal(v.latest, null);
   assert.deepEqual([v.latestNet, v.yearNet, v.allNet, v.kit.length], [0, 0, 0, 0]);
+});
+
+test("My kit has a column per published month, newest first, and a lifetime total", () => {
+  const v = consignorView([m("2025-12", "published", 4000), m("2026-10", "published", 20000), m("2026-11", "draft", 50000)], "fkf");
+  assert.deepEqual(v.months, ["2026-10", "2025-12"]);
+  assert.equal(v.firstMonth, "2025-12");
+  const ronin = v.kit.find((k) => k.name === "Ronin 4D")!;
+  assert.deepEqual(ronin.byMonth, { "2026-10": 10000, "2025-12": 2000 });
+  assert.equal(ronin.totalPence, 12000);
+  assert.equal(ronin.yearPence, 10000);
+});
+
+test("an item renamed with the consignor code in front is one row", () => {
+  assert.equal(kitName("CC - Leica M11 Monochrom"), "Leica M11 Monochrom");
+  assert.equal(kitName("Leica M11 Monochrom"), "Leica M11 Monochrom");
+  assert.equal(kitName("ARRI - Alexa Mini"), "Alexa Mini");
+  assert.equal(kitName("Kit - Canon C80"), "Kit - Canon C80");
 });

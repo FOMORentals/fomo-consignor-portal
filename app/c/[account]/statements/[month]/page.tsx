@@ -17,7 +17,7 @@ export default async function Statement({ params }: { params: Promise<{ account:
       <h1>{monthName(month)}</h1>
       <p className="sub">
         {record?.history
-          ? "From FOMO's 2026 consignment records"
+          ? "From FOMO's consignment records"
           : selfBilling
             ? `Self-billed invoice ${selfBillingNumber(account, month)}`
             : `Reference ${selfBillingNumber(account, month)}`}{" "}
