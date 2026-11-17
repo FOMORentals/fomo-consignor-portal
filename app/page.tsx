@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { accountsFor, hasLogin } from "@/lib/access";
@@ -46,7 +45,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ s
         <div className={authStyles.success}>If that email has a consignor account, a sign-in link is on its way. It works once, for 30 minutes.</div>
       ) : (
         <>
-          <p className={authStyles.subtitle}>See what your kit earned and download your statements. Enter your email and we&apos;ll send you a sign-in link.</p>
+          <p className={authStyles.subtitle}>Enter your email and we&apos;ll send you a sign-in link.</p>
           {sent === "bad" && <div className={authStyles.error}>That email doesn&apos;t look right. Check for a typo.</div>}
           {sent === "failed" && <div className={authStyles.error}>We couldn&apos;t send the email just now. Try again in a minute.</div>}
           {error && <div className={authStyles.error}>That sign-in link has expired or was already used. Ask for a new one.</div>}
@@ -63,9 +62,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ s
           </form>
         </>
       )}
-      <div className={authStyles.links}>
-        <Link href="/admin/signin">FOMO staff sign in</Link>
-      </div>
     </AuthShell>
   );
 }
