@@ -5,7 +5,7 @@
 import type { Statement } from "./payout.ts";
 import type { MonthRecord } from "./store.ts";
 
-export type KitRow = { equipmentId: number; name: string; monthPence: number; yearPence: number; totalPence: number };
+export type KitRow = { name: string; monthPence: number; yearPence: number; totalPence: number };
 
 export type ConsignorView = {
   statements: Statement[]; // newest first
@@ -30,15 +30,16 @@ export function consignorView(months: MonthRecord[], accountId: string): Consign
   const year = latest?.month.slice(0, 4);
   const sum = (list: Statement[]) => list.reduce((a, s) => a + s.netPence, 0);
 
-  const kit = new Map<number, KitRow>();
+  // Keyed by name: tracker months (before the portal) have no Rentman ids, and identical items read as one line.
+  const kit = new Map<string, KitRow>();
   for (const s of statements) {
     for (const i of s.items) {
-      const row = kit.get(i.equipmentId) ?? { equipmentId: i.equipmentId, name: i.name, monthPence: 0, yearPence: 0, totalPence: 0 };
+      const row = kit.get(i.name) ?? { name: i.name, monthPence: 0, yearPence: 0, totalPence: 0 };
       const p = itemShare(s, i.pence);
       row.totalPence += p;
       if (s.month.slice(0, 4) === year) row.yearPence += p;
       if (s.month === latest?.month) row.monthPence += p;
-      kit.set(i.equipmentId, row);
+      kit.set(i.name, row);
     }
   }
   return {

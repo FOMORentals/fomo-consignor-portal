@@ -25,7 +25,7 @@ export default async function Kit({ params }: { params: Promise<{ account: strin
             </thead>
             <tbody>
               {view.kit.map((k) => (
-                <tr key={k.equipmentId}>
+                <tr key={k.name}>
                   <td>{k.name}</td>
                   <td className="num">{k.monthPence ? pounds(k.monthPence) : ""}</td>
                   <td className="num">{pounds(k.yearPence)}</td>

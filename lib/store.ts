@@ -53,6 +53,8 @@ export type MonthRecord = {
   adjustments: Record<string, Adjustment[]>;
   publishedBy?: string;
   publishedAt?: string;
+  /** Loaded from the Consignment Tracker 2026 as it was paid (Jan–Oct 2026): no Xero bills, no PDF. */
+  history?: boolean;
   /** Set at Publish: FOMO's and each consignor's details for the self-billing invoices. */
   fomo?: Party;
   parties?: Record<string, Party>;
