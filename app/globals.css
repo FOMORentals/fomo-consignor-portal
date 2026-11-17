@@ -52,3 +52,11 @@ details.signedOff { margin: -12px 0 24px; color: var(--muted); }
 .bills { list-style: none; padding: 0; }
 .bills li { padding: 4px 0; border-bottom: 1px solid var(--line, #e5e5e5); }
 .bills li.failed { color: #b3261e; }
+
+form.stack { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 0 0 32px; }
+.tile { border: 1px solid var(--line); background: #fff; padding: 16px; }
+.tile .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.tile .value { font-family: var(--font-serif); font-size: 32px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.switch { font-size: 14px; }
+.switch select { font: inherit; padding: 4px 6px; }

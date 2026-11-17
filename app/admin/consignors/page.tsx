@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { listAccounts } from "@/lib/store";
 import { METHOD_LABEL } from "@/lib/format";
 import { shareFor } from "@/lib/payout";
@@ -31,7 +32,9 @@ export default async function Consignors() {
             <tbody>
               {accounts.map((a) => (
                 <tr key={a.id}>
-                  <td>{a.name}</td>
+                  <td>
+                    <Link href={`/c/${a.id}`}>{a.name}</Link>
+                  </td>
                   <td>{a.xeroContact}</td>
                   <td>{a.codes.join(", ")}</td>
                   <td className="num">{Math.round(shareFor(a, thisMonth) * 100)}%</td>
