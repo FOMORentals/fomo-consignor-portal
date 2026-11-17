@@ -1,9 +1,13 @@
 import { notFound } from "next/navigation";
 import { getMonth, listAccounts } from "@/lib/store";
 import { METHOD_LABEL, monthName, pounds } from "@/lib/format";
-import { addAdjustmentAction, removeAdjustmentAction, signOffAction } from "./actions";
+import { addAdjustmentAction, publishAction, removeAdjustmentAction, retryBillsAction, signOffAction } from "./actions";
 
 export const dynamic = "force-dynamic";
+/** Publish makes up to 23 Xero bills at Xero's pace (about 4 calls each, one a second). */
+export const maxDuration = 300;
+
+const xeroBillUrl = (id: string) => `https://go.xero.com/AccountsPayable/Edit.aspx?InvoiceID=${id}`;
 
 /** Sam's month view (spec §6): every consignor's figures, the safety checks, and Publish. */
 export default async function MonthPage({
@@ -149,16 +153,59 @@ export default async function MonthPage({
         </details>
       ))}
 
-      <div className="actions">
-        <button type="button" disabled>
-          Publish {monthName(month)}
-        </button>
-        <span className="note">
-          {record.status === "published"
-            ? "Published: consignors can see these statements."
-            : "Publishing (statements, self-billing invoices, Xero draft bills, emails) arrives in the next update."}
-        </span>
-      </div>
+      {draft ? (
+        <form className="actions" action={publishAction.bind(null, month)}>
+          <label className="note">
+            <input type="checkbox" name="confirm" required disabled={open.length > 0} /> I&apos;ve checked these figures
+          </label>
+          <button type="submit" disabled={open.length > 0}>
+            Publish {monthName(month)}
+          </button>
+          <span className="note">
+            {open.length > 0
+              ? "Clear the checks above first."
+              : "Fixes the figures, makes the Xero draft bills with their PDFs (Sam approves them in Xero). Consignor pages and emails come in a later update."}
+          </span>
+        </form>
+      ) : (
+        <section>
+          <h2 className="section">Xero draft bills</h2>
+          {(() => {
+            const bills = record.bills ?? {};
+            const failed = rows.filter((s) => bills[s.accountId]?.state === "failed" || !bills[s.accountId]);
+            return (
+              <>
+                <ul className="bills">
+                  {rows.map((s) => {
+                    const b = bills[s.accountId];
+                    const name = names.get(s.accountId) ?? s.accountId;
+                    if (!b) return <li key={s.accountId}>{name}: not made yet.</li>;
+                    if (b.state === "created")
+                      return (
+                        <li key={s.accountId}>
+                          {name}: <a href={xeroBillUrl(b.invoiceId)}>{b.number}</a> draft in Xero, {pounds(s.totalPence)}
+                          {!b.attached && <span className="note"> (check the PDF is attached in Xero)</span>}
+                        </li>
+                      );
+                    if (b.state === "skipped") return <li key={s.accountId}>{name}: {b.reason}</li>;
+                    return (
+                      <li key={s.accountId} className="failed">
+                        {name}: {b.number} not made. {b.error}
+                      </li>
+                    );
+                  })}
+                </ul>
+                {failed.length > 0 && (
+                  <form className="actions" action={retryBillsAction.bind(null, month)}>
+                    <button type="submit">Try the {failed.length} missing bill{failed.length === 1 ? "" : "s"} again</button>
+                    <span className="note">Bills already in Xero are never made twice.</span>
+                  </form>
+                )}
+              </>
+            );
+          })()}
+        </section>
+      )}
     </main>
   );
 }

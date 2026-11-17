@@ -31,6 +31,15 @@ export type AccountRecord = Account & {
 
 export type SignOff = { by: string; at: string; note: string };
 
+/** Name, address and VAT number as Xero holds them, copied at Publish so a statement never changes afterwards. */
+export type Party = { name: string; address: string[]; vatNumber: string; xeroContactId?: string };
+
+/** What happened to an account's Xero draft bill. Kept on the month so a retry never makes a second bill. */
+export type BillResult =
+  | { state: "created"; number: string; invoiceId: string; at: string; attached: boolean }
+  | { state: "skipped"; number: string; reason: string; at: string }
+  | { state: "failed"; number: string; error: string; at: string };
+
 export type MonthRecord = {
   month: string;
   status: "draft" | "published";
@@ -44,6 +53,11 @@ export type MonthRecord = {
   adjustments: Record<string, Adjustment[]>;
   publishedBy?: string;
   publishedAt?: string;
+  /** Set at Publish: FOMO's and each consignor's details for the self-billing invoices. */
+  fomo?: Party;
+  parties?: Record<string, Party>;
+  /** Xero draft bill per account id, filled in at Publish (and by Retry). */
+  bills?: Record<string, BillResult>;
 };
 
 export function db() {
