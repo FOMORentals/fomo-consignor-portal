@@ -6,9 +6,6 @@ export const authStyles = shellStyles;
 // The client portal's sign-in collage (30 house photos, pre-cropped to 6:5; sources in fomo-client-portal docs/auth-collage-sources.json).
 const PHOTOS = Array.from({ length: 30 }, (_, i) => `/brand/collage/${String(i).padStart(2, "0")}.webp`);
 
-// What the portal is for, over the photos. Kept short (Jamie, 17 Nov 2026).
-const FEATURES = ["Earnings by item", "Monthly statements", "Checked by FOMO"];
-
 export default function AuthShell({ badge = "Consignor portal", children }: { badge?: string; children: React.ReactNode }) {
   return (
     <div className={shellStyles.page}>
@@ -20,22 +17,16 @@ export default function AuthShell({ badge = "Consignor portal", children }: { ba
         <div className={shellStyles.overlay}>
           <div className={shellStyles.overlayBlock}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className={shellStyles.overlayIcon} src="/icon.png" alt="FOMO" width={56} height={56} />
-            <h2 className={shellStyles.overlayTitle}>What your kit earned.</h2>
-            <ol className={shellStyles.overlayList}>
-              {FEATURES.map((f, i) => (
-                <li key={f}>
-                  <span>{String(i + 1).padStart(2, "0")}</span>
-                  {f}
-                </li>
-              ))}
-            </ol>
+            <img className={shellStyles.overlayLogo} src="/brand/fomo-logo.png" alt="FOMO" width={960} height={238} />
+            <p className={shellStyles.overlayBadge}>{badge}</p>
           </div>
         </div>
       </div>
       <main className={shellStyles.side}>
         <div className={shellStyles.card}>
-          <BrandMark badge={badge} variant="auth" />
+          <div className={shellStyles.phoneMark}>
+            <BrandMark badge={badge} variant="auth" />
+          </div>
           <div className={shellStyles.body}>{children}</div>
         </div>
       </main>

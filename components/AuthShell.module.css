@@ -46,45 +46,26 @@
   max-width: 100%;
 }
 
-/* The favicon is a white F on black; screen drops the black so only the white F shows over the photos. */
-.photos .overlayIcon {
+/* Just the logo and the portal name over the photos (Jamie, 17 Nov 2026). */
+.photos .overlayLogo {
   display: block;
-  width: 56px;
-  height: 56px;
-  margin-left: -14px;
+  width: clamp(200px, 22vw, 300px);
+  height: auto;
   filter: none;
-  mix-blend-mode: screen;
-  margin-bottom: 14px;
 }
 
-.overlayTitle {
-  font-family: var(--font-serif);
-  font-size: clamp(32px, 3.4vw, 48px);
-  font-weight: 400;
-  line-height: 1.08;
-  max-width: 14ch;
-  margin-bottom: 32px;
-}
-
-.overlayList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  font-size: 16px;
-  line-height: 1.4;
-}
-
-.overlayList li {
-  display: flex;
-  gap: 16px;
-}
-
-.overlayList span {
+.overlayBadge {
+  margin-top: 20px;
   font-family: var(--font-code);
-  font-size: 12px;
-  line-height: 22px;
-  color: var(--brand-house-lime);
+  font-size: clamp(13px, 1.1vw, 16px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #f5f4ef;
+}
+
+/* The logo is on the photos on wide screens, so the form side only shows it on phones and tablets (no photos there). */
+.phoneMark {
+  display: none;
 }
 
 .side {
@@ -291,6 +272,10 @@
 
   .photos {
     display: none;
+  }
+
+  .phoneMark {
+    display: block;
   }
 
   .side {
