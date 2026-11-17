@@ -72,8 +72,9 @@ test("safety checks: totals, unknown and lower-case codes, idle kit, big swings"
     idleItemIds: new Set([4]),
     knownCodes: new Set(["JM", "CC"]),
   });
-  assert.deepEqual(warnings.map((w) => w.id).sort(), ["big-swing:fkf-one", "idle-kit:4", "totals", "unknown-code:cc"]);
+  assert.deepEqual(warnings.map((w) => w.id).sort(), ["big-swing:fkf-one", "idle-kit:JM:1", "totals", "unknown-code:cc"]);
   assert.match(warnings.find((w) => w.kind === "unknown-code")!.message, /did you mean CC\?/);
+  assert.equal(warnings.find((w) => w.kind === "idle-kit")!.message, "JM: 1 item has earned nothing for 3 months: Old tripod.");
 });
 
 test("a clean month has no warnings", () => {

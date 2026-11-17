@@ -69,10 +69,23 @@ export function runChecks(input: {
     });
   }
 
-  // 3. Consignor kit (not archived) that has earned nothing for 3 months.
+  // 3. Consignor kit (not archived) that has earned nothing for 3 months: one warning per code, not per item, so Sam
+  //    signs off "JM has 22 idle items" once. The count is in the id, so a new idle item reopens it.
+  //    Kit with an unknown code is left to warning 2.
+  const idle = new Map<string, string[]>();
   for (const i of input.items) {
-    if (i.archived || NOT_CONSIGNOR_CODES.has(norm(i.code)) || !input.idleItemIds.has(i.equipmentId)) continue;
-    out.push({ id: `idle-kit:${i.equipmentId}`, kind: "idle-kit", message: `${i.name} (${i.code}) has earned nothing for 3 months.` });
+    const c = i.code.trim();
+    if (i.archived || NOT_CONSIGNOR_CODES.has(norm(c)) || !input.knownCodes.has(c) || !input.idleItemIds.has(i.equipmentId)) continue;
+    idle.set(c, [...(idle.get(c) ?? []), i.name]);
+  }
+  for (const [code, names] of [...idle].sort(([a], [b]) => a.localeCompare(b))) {
+    const list = names.sort((a, b) => a.localeCompare(b));
+    const shown = list.slice(0, 8).join(", ") + (list.length > 8 ? ` and ${list.length - 8} more` : "");
+    out.push({
+      id: `idle-kit:${code}:${list.length}`,
+      kind: "idle-kit",
+      message: `${code}: ${list.length} item${list.length === 1 ? " has" : "s have"} earned nothing for 3 months: ${shown}.`,
+    });
   }
 
   // 4. Payout moved more than 50% from last month.
