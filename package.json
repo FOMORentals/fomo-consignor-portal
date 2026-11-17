@@ -3,19 +3,33 @@
   "private": true,
   "type": "module",
   "description": "Consignor portal (consignors.fomorentals.co.uk). Spec: docs/SPEC.md. Step 1: rebuild Jan-Oct 2026 consignor revenue from Rentman and match the Consignment Tracker 2026.",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "test": "node --test 'test/*.test.ts'",
-    "lint": "tsc -p . --noEmit",
+    "lint": "eslint && tsc --noEmit",
     "rebuild:pull": "node scripts/rebuild-pull.ts"
   },
   "dependencies": {
     "@fomo/rentman-core": "file:vendor/fomo-rentman-core-0.9.0.tgz",
     "@google-cloud/firestore": "^7.11.6",
-    "@sentry/node": "^10.76.0"
+    "@sentry/node": "^10.76.0",
+    "firebase-admin": "^14.5.1",
+    "next": "^16.3.1",
+    "next-auth": "^5.0.0-beta.32",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@types/node": "^24",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.1",
     "typescript": "^5.9"
   }
 }

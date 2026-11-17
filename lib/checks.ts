@@ -55,6 +55,8 @@ export function runChecks(input: {
   for (const i of input.items) {
     const c = i.code.trim();
     if (NOT_CONSIGNOR_CODES.has(norm(c)) || input.knownCodes.has(c)) continue;
+    // Old consignors' kit is archived: only worth a warning if it somehow earned this month.
+    if (i.archived && !input.itemRevenue.get(i.equipmentId)) continue;
     byCode.set(c, [...(byCode.get(c) ?? []), i]);
   }
   for (const [code, items] of byCode) {
