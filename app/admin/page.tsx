@@ -9,7 +9,7 @@ export default async function Months() {
   const months = await listMonthIds();
   if (months.length === 1) redirect(`/admin/months/${months[0]}`);
   return (
-    <main>
+    <div>
       <h1>Months</h1>
       {months.length === 0 ? (
         <p className="empty">No months yet. The first draft is built on the 1st of the month from Rentman.</p>
@@ -22,6 +22,6 @@ export default async function Months() {
           ))}
         </ul>
       )}
-    </main>
+    </div>
   );
 }

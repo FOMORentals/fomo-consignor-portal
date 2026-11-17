@@ -8,15 +8,15 @@ export default async function Overview({ params }: { params: Promise<{ account: 
   const { account, view } = await load(id);
   if (!view.latest) {
     return (
-      <main>
+      <div>
         <h1>Overview</h1>
         <p className="empty">Your first statement will appear here once FOMO publishes the month.</p>
-      </main>
+      </div>
     );
   }
   const year = view.latest.month.slice(0, 4);
   return (
-    <main>
+    <div>
       <h1>Overview</h1>
       <p className="sub">Your payouts before VAT. Figures change only when FOMO publishes a month.</p>
       <div className="tiles">
@@ -37,6 +37,6 @@ export default async function Overview({ params }: { params: Promise<{ account: 
         <Link href={`/c/${account.id}/statements/${view.latest.month}`}>See the {monthName(view.latest.month)} statement</Link> ·{" "}
         <Link href={`/c/${account.id}/kit`}>What each item earned</Link>
       </p>
-    </main>
+    </div>
   );
 }

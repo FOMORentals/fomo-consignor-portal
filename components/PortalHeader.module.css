@@ -1,0 +1,95 @@
+/* Brand §6 Nav: solid Casette White, hairline below, page column, cells divided by hairlines */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(249, 249, 247, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+
+.bar {
+  width: min(1344px, 100% - 96px);
+  margin: 0 auto;
+  min-height: 68px;
+  display: flex;
+  align-items: stretch;
+}
+
+.bar > * {
+  display: flex;
+  align-items: center;
+}
+
+.bar > * + * {
+  border-left: 1px solid var(--line);
+  padding-left: 24px;
+}
+
+.bar > *:not(:last-child) {
+  padding-right: 24px;
+}
+
+.nav {
+  flex: 1;
+}
+
+.actions {
+  gap: 12px;
+}
+
+.signOut {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-code);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color var(--t) var(--ease), background var(--t) var(--ease);
+}
+
+.signOut:hover {
+  border-color: var(--ink);
+}
+
+.signOut:active {
+  background: var(--surface-2);
+}
+
+@media (max-width: 1040px) {
+  .bar {
+    width: min(1344px, 100% - 64px);
+  }
+}
+
+@media (max-width: 700px) {
+  .bar {
+    width: calc(100% - 32px);
+    flex-wrap: wrap;
+  }
+
+  .bar > * + * {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .bar > *:not(:last-child) {
+    padding-right: 0;
+  }
+
+  .actions {
+    margin-left: auto;
+  }
+
+  .nav {
+    order: 3;
+    flex-basis: 100%;
+    border-top: 1px solid var(--line);
+  }
+}

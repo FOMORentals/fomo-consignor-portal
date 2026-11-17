@@ -13,7 +13,7 @@ export default async function Statement({ params }: { params: Promise<{ account:
   const hasPdf = !!record?.parties?.[account.id];
   const selfBilling = s.method === "self_billing";
   return (
-    <main>
+    <div>
       <h1>{monthName(month)}</h1>
       <p className="sub">
         {record?.history
@@ -92,6 +92,6 @@ export default async function Statement({ params }: { params: Promise<{ account:
           </tfoot>
         </table>
       </div>
-    </main>
+    </div>
   );
 }

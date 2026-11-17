@@ -7,7 +7,7 @@ export default async function Kit({ params }: { params: Promise<{ account: strin
   const { view } = await load(id);
   const latest = view.latest?.month;
   return (
-    <main>
+    <div>
       <h1>My kit</h1>
       <p className="sub">What each item earned you (your share, before VAT), from published statements.</p>
       {view.kit.length === 0 ? (
@@ -36,6 +36,6 @@ export default async function Kit({ params }: { params: Promise<{ account: strin
           </table>
         </div>
       )}
-    </main>
+    </div>
   );
 }

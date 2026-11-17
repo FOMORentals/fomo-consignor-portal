@@ -1,0 +1,60 @@
+import BrandMark from "./BrandMark";
+import shellStyles from "./AuthShell.module.css";
+
+export const authStyles = shellStyles;
+
+// The client portal's sign-in collage (30 house photos, pre-cropped to 6:5; sources in fomo-client-portal docs/auth-collage-sources.json).
+const PHOTOS = Array.from({ length: 30 }, (_, i) => `/brand/collage/${String(i).padStart(2, "0")}.webp`);
+
+// What the portal is for, over the photos (same pattern as the client portal's sign-in).
+const FEATURES = [
+  "See what your kit earned, item by item.",
+  "Download your monthly statements and invoices.",
+  "Check the kit we hold for you.",
+  "Every month checked by FOMO before it's published.",
+];
+
+export default function AuthShell({ badge = "Consignor portal", children }: { badge?: string; children: React.ReactNode }) {
+  return (
+    <div className={shellStyles.page}>
+      <div className={shellStyles.photos}>
+        {PHOTOS.map((src) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img key={src} src={src} alt="" loading="lazy" decoding="async" />
+        ))}
+        <div className={shellStyles.overlay}>
+          <div className={shellStyles.overlayBlock}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className={shellStyles.overlayIcon} src="/icon.png" alt="FOMO" width={56} height={56} />
+            <h2 className={shellStyles.overlayTitle}>Your kit, what it earned and your statements in one place.</h2>
+            <ol className={shellStyles.overlayList}>
+              {FEATURES.map((f, i) => (
+                <li key={f}>
+                  <span>{String(i + 1).padStart(2, "0")}</span>
+                  {f}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+      <main className={shellStyles.side}>
+        <div className={shellStyles.card}>
+          <BrandMark badge={badge} variant="auth" />
+          <div className={shellStyles.body}>{children}</div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export function GoogleIcon() {
+  return (
+    <svg viewBox="0 0 48 48" aria-hidden="true">
+      <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z" />
+      <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" />
+      <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" />
+      <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" />
+    </svg>
+  );
+}
