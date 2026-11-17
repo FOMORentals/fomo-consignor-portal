@@ -1,0 +1,21 @@
+{
+  "name": "fomo-consignor-portal",
+  "private": true,
+  "type": "module",
+  "description": "Consignor portal (consignors.fomorentals.co.uk). Spec: docs/SPEC.md. Step 1: rebuild Jan-Oct 2026 consignor revenue from Rentman and match the Consignment Tracker 2026.",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "test": "node --test 'test/*.test.ts'",
+    "lint": "tsc -p . --noEmit",
+    "rebuild:pull": "node scripts/rebuild-pull.ts"
+  },
+  "dependencies": {
+    "@fomo/rentman-core": "file:vendor/fomo-rentman-core-0.9.0.tgz",
+    "@google-cloud/firestore": "^7.11.6",
+    "@sentry/node": "^10.76.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "typescript": "^5.9"
+  }
+}
