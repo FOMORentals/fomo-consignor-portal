@@ -6,6 +6,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (session?.user?.role !== "staff") return <>{children}</>;
   return (
     <PortalShell
+      badge="Consignor admin"
       subtitle={session.user.email ?? "FOMO staff"}
       links={[
         { href: "/admin", label: "Months", exact: false },
