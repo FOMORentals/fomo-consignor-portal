@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
+import AuthShell, { authStyles } from "@/components/AuthShell";
 
 /**
  * Where the emailed link lands. Signing in needs a press of the button, so an email scanner opening the link
@@ -18,13 +19,14 @@ export default async function LinkSignIn({ searchParams }: { searchParams: Promi
     }
   }
   return (
-    <main className="signin">
-      <div className="brand">FOMO Rentals</div>
-      <h1>Consignors</h1>
-      <p className="sub">Sign in to see your statements.</p>
+    <AuthShell>
+      <h1 className={authStyles.title}>Sign in</h1>
+      <p className={authStyles.subtitle}>Press the button to sign in and see your statements.</p>
       <form action={go}>
-        <button type="submit">Sign in</button>
+        <button className={authStyles.button} type="submit">
+          Sign in
+        </button>
       </form>
-    </main>
+    </AuthShell>
   );
 }

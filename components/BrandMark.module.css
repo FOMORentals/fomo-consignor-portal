@@ -1,0 +1,64 @@
+.mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Sign-in: inverted wordmark over a mono label, left-aligned like the form */
+.auth {
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.header {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+}
+
+.compact {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+}
+
+/* White wordmark inverted on light grounds, 22px tall in the nav (brand §8) */
+.auth .logo,
+.header .logo,
+.compact .logo {
+  height: 22px;
+  filter: invert(1);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.header .meta,
+.compact .meta {
+  align-items: flex-start;
+}
+
+.badge {
+  font-family: var(--font-code);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}

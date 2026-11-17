@@ -1,0 +1,90 @@
+.shell {
+  min-height: 100dvh;
+  background: var(--page);
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  display: flex;
+  gap: 26px;
+  align-self: stretch;
+}
+
+.link,
+.linkActive {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* Active category keeps a persistent 1px underline; others draw one on hover (brand §6 Nav). On the label, not the
+ * link, so a label that wraps to two lines is underlined below them, not through the second (Jamie, 28 Oct 2026). */
+.label {
+  padding-bottom: 3px;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+  transition: background-size 260ms var(--ease);
+}
+
+.link:hover .label,
+.linkActive .label {
+  background-size: 100% 1px;
+}
+
+/* Unpaid invoices (Jamie, 29 Oct 2026): red, the portal's colour for Unpaid. */
+.dot {
+  width: 6px;
+  height: 6px;
+  margin: 0 0 12px 4px;
+  border-radius: 50%;
+  background: var(--error);
+  flex-shrink: 0;
+}
+
+.content {
+  width: min(1344px, 100% - 96px);
+  margin: 0 auto;
+  padding: 48px 0 96px;
+}
+
+@media (max-width: 1040px) {
+  .content {
+    width: min(1344px, 100% - 64px);
+  }
+}
+
+@media (max-width: 700px) {
+  .nav {
+    min-height: 48px;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  /* Four sections fit across a phone (Rate card, 23 Oct 2026). */
+  .link,
+  .linkActive {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
+
+/* Four sections across a standard phone (375px) without running off the edge (Jamie, 27 Oct 2026). */
+@media (max-width: 420px) {
+  .nav {
+    gap: 8px;
+  }
+
+  .link,
+  .linkActive {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 359px) {
+  .content {
+    width: calc(100% - 32px);
+    padding: 32px 0 72px;
+  }
+}

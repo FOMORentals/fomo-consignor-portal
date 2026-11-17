@@ -30,7 +30,7 @@ export default async function MonthPage({
   const sum = (f: (s: (typeof rows)[number]) => number) => rows.reduce((a, s) => a + f(s), 0);
 
   return (
-    <main>
+    <div>
       <h1>{monthName(month)}</h1>
       <p className="sub">
         <span className={`status ${record.status}`}>{record.status}</span> · Worked out from Rentman{" "}
@@ -208,6 +208,6 @@ export default async function MonthPage({
           })()}
         </section>
       )}
-    </main>
+    </div>
   );
 }

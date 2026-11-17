@@ -9,7 +9,7 @@ export default async function Consignors() {
   const accounts = await listAccounts();
   const thisMonth = new Date().toISOString().slice(0, 7);
   return (
-    <main>
+    <div>
       <h1>Consignors</h1>
       <p className="sub">{accounts.filter((a) => a.active).length} active</p>
       {accounts.length === 0 ? (
@@ -48,6 +48,6 @@ export default async function Consignors() {
           </table>
         </div>
       )}
-    </main>
+    </div>
   );
 }

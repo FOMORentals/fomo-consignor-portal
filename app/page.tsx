@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { accountsFor, hasLogin } from "@/lib/access";
 import { createLink, linksSentSince, PER_EMAIL_PER_HOUR, removeLink } from "@/lib/signin-links";
 import { sendEmail, signInLinkEmail } from "@/lib/email";
+import AuthShell, { authStyles } from "@/components/AuthShell";
 
 export const dynamic = "force-dynamic";
 
@@ -38,24 +40,32 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ s
   }
   const { sent, error } = await searchParams;
   return (
-    <main className="signin">
-      <div className="brand">FOMO Rentals</div>
-      <h1>Consignors</h1>
+    <AuthShell>
+      <h1 className={authStyles.title}>Sign in</h1>
       {sent === "1" ? (
-        <p className="sub">If that email has a consignor account, a sign-in link is on its way. It works once, for 30 minutes.</p>
+        <div className={authStyles.success}>If that email has a consignor account, a sign-in link is on its way. It works once, for 30 minutes.</div>
       ) : (
         <>
-          <p className="sub">See what your kit earned and download your statements. Enter your email and we&apos;ll send you a sign-in link.</p>
-          {sent === "bad" && <p className="warnings">That email doesn&apos;t look right. Check for a typo.</p>}
-          {sent === "failed" && <p className="warnings">We couldn&apos;t send the email just now. Try again in a minute.</p>}
-          {error && <p className="warnings">That sign-in link has expired or was already used. Ask for a new one.</p>}
-          <form action={requestLink} className="stack">
-            <input type="email" name="email" required placeholder="you@example.com" autoComplete="email" />
-            <button type="submit">Email me a sign-in link</button>
+          <p className={authStyles.subtitle}>See what your kit earned and download your statements. Enter your email and we&apos;ll send you a sign-in link.</p>
+          {sent === "bad" && <div className={authStyles.error}>That email doesn&apos;t look right. Check for a typo.</div>}
+          {sent === "failed" && <div className={authStyles.error}>We couldn&apos;t send the email just now. Try again in a minute.</div>}
+          {error && <div className={authStyles.error}>That sign-in link has expired or was already used. Ask for a new one.</div>}
+          <form action={requestLink}>
+            <div className={authStyles.field}>
+              <label className={authStyles.label} htmlFor="email">
+                Email
+              </label>
+              <input className={authStyles.input} id="email" type="email" name="email" required placeholder="you@example.com" autoComplete="email" />
+            </div>
+            <button className={authStyles.button} type="submit">
+              Email me a sign-in link
+            </button>
           </form>
         </>
       )}
-      <p className="note">FOMO staff: <a href="/admin/signin">sign in here</a>.</p>
-    </main>
+      <div className={authStyles.links}>
+        <Link href="/admin/signin">FOMO staff sign in</Link>
+      </div>
+    </AuthShell>
   );
 }

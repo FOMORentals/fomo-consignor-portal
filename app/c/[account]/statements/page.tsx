@@ -7,7 +7,7 @@ export default async function Statements({ params }: { params: Promise<{ account
   const { account: id } = await params;
   const { account, view } = await load(id);
   return (
-    <main>
+    <div>
       <h1>Statements</h1>
       {view.statements.length === 0 ? (
         <p className="empty">Your first statement will appear here once FOMO publishes the month.</p>
@@ -37,6 +37,6 @@ export default async function Statements({ params }: { params: Promise<{ account
           </table>
         </div>
       )}
-    </main>
+    </div>
   );
 }
