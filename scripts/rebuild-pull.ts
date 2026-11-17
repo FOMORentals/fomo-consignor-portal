@@ -35,14 +35,19 @@ type Row = Record<string, unknown> & { id: number };
 const RETRY_WAITS_MS = [10_000, 30_000, 90_000];
 const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function getWithRetry(url: string, path: string): Promise<Response> {
+/** Network failures (fetch failed, a body cut off mid-read: "terminated") are TypeErrors; anything else, such as a
+ *  missing RENTMAN_TOKEN, stops the run at once. */
+const isDropped = (e: unknown) => e instanceof TypeError;
+
+async function getPage(url: string, path: string): Promise<{ data: Row[]; limit?: number }> {
   for (let attempt = 0; ; attempt++) {
     try {
       const r = await rentmanGet(url);
-      if (r.status < 500 || attempt >= RETRY_WAITS_MS.length) return r;
+      if (r.ok) return (await r.json()) as { data: Row[]; limit?: number }; // the body read is retried too
+      if (r.status < 500 || attempt >= RETRY_WAITS_MS.length) throw new Error(`GET ${path} failed: ${r.status} ${(await r.text()).slice(0, 300)}`);
       console.warn(`\n  ${path}: Rentman ${r.status}, trying again in ${RETRY_WAITS_MS[attempt] / 1000}s`);
     } catch (e) {
-      if (attempt >= RETRY_WAITS_MS.length) throw e;
+      if (!isDropped(e) || attempt >= RETRY_WAITS_MS.length) throw e;
       console.warn(`\n  ${path}: connection dropped (${e instanceof Error ? e.message : e}), trying again in ${RETRY_WAITS_MS[attempt] / 1000}s`);
     }
     await pause(RETRY_WAITS_MS[attempt]);
@@ -80,9 +85,7 @@ async function pageAll(path: string, fields: string, filter: Record<string, stri
   };
   for (;;) {
     const url = `${BASE_URL}${path}?fields=${fields}&limit=${PAGE}&offset=${offset}&sort=%2Bid${extra}`;
-    const r = await getWithRetry(url, path);
-    if (!r.ok) throw new Error(`GET ${path} failed: ${r.status} ${(await r.text()).slice(0, 300)}`);
-    const page = (await r.json()) as { data: Row[]; limit?: number };
+    const page = await getPage(url, path);
     out.push(...page.data);
     const size = Number(page.limit) > 0 ? Math.min(Number(page.limit), PAGE) : PAGE;
     process.stdout.write(`  ${path}: ${out.length}\r`);
@@ -102,6 +105,10 @@ function idOf(link: unknown): number | null {
 }
 
 async function main() {
+  if (!process.env.RENTMAN_TOKEN?.trim()) {
+    console.error("RENTMAN_TOKEN is not set in this terminal. Nothing read.");
+    process.exit(1);
+  }
   if (await isRentmanCircuitOpen()) {
     console.error("Rentman circuit is open (another app hit the limit). Nothing read. Try again in an hour.");
     process.exit(2);
