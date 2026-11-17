@@ -168,7 +168,7 @@ export default async function MonthPage({
           </span>
         </form>
       ) : record.history ? (
-        <p className="note actions">Loaded from the Consignment Tracker 2026 as it was paid. Billed in Xero from the tracker, not from here.</p>
+        <p className="note actions">Loaded from the Consignment Tracker as it was paid. Billed in Xero from the tracker, not from here.</p>
       ) : (
         <section>
           <h2 className="section">Xero draft bills</h2>

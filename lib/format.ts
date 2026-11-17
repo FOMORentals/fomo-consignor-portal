@@ -11,3 +11,9 @@ export const monthName = (month: string) => {
 };
 
 export const METHOD_LABEL = { self_billing: "Self billing", own_invoice: "Their own invoice", rentman_credit: "Rentman credit" } as const;
+
+/** "2026-10" -> "Oct 26" (narrow table headers) */
+export const monthShort = (month: string) => {
+  const [y, m] = month.split("-").map(Number);
+  return `${MONTHS[m - 1].slice(0, 3)} ${String(y).slice(2)}`;
+};
